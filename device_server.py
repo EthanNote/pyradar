@@ -72,8 +72,10 @@ class DataHandler(BaseRequestHandler):
             #print(report)
             #transformed_position = {'x':self.device.position[0] + distance * sin(angle*0.0174533),
             #                      'y':self.device.position[1] + distance * cos(angle*0.0174533)}
-            transformed_position = {'x':self.device.position[0] + distance * sin((-angle+self.device.rotation+30)*0.0174533),
-                                   'y':self.device.position[1] + distance * cos((-angle+self.device.rotation+30)*0.0174533)}
+            world_angle=(-angle+self.device.rotation+self.device.antana_angle_correction+30)*0.0174533                      
+            
+            transformed_position = {'x':self.device.position[0] + distance * sin(world_angle),
+                                   'y':self.device.position[1] + distance * cos(world_angle)}
             if distance < 16:
                 self.device.status['Last target'] = (distance, angle, velocity)
                 self.device.status['Detection']+=1
