@@ -15,7 +15,7 @@ class Device:
         self.status['Rotation']=rotation
         self.status['Detection']=0
         self.status['Last target']=None
-        
+        self.antana_angle_correction=-5 
     #def createtarget(self, distance, angle, velocity):
     #    angleoffset=-15.
     #    anglezoom=1

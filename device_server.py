@@ -5,7 +5,8 @@ from threading import Thread
 from device_profile import *
 import filter
 
-#statics={0:0, 1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0 }
+#statics={0:0, 1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0,15:0,16:0,17:0,18:0,19:0,20:0,21:0,22:0,23:0,24:0,25:0,26:0,27:0,28:0,29:0,30:0 }
+
 class DataHandler(BaseRequestHandler):
    
     def handle(self):
@@ -55,37 +56,33 @@ class DataHandler(BaseRequestHandler):
             data = Struct('!ihiih').unpack(msg[start:end])
             distance = data[0] * 0.01
             angle = data[1] * 0.01
-            x = data[2] * 0.01
-            y = data[3] * 0.01
-            velocity = data[4] * 0.01
-            power = msg[end]
+            #x = data[2] * 0.01
+            #y = data[3] * 0.01
+            #velocity = data[4] * 0.01
+            #power = msg[end]
 
             now = datetime.now()
-           
-            #report = {'distance':distance, 'angle':angle,
-            #        'x':x, 'y':y, 'velocity':velocity,
-            #        'power':power,'device':self.device.name,
-            #        'time':'%d-%d-%d_%d:%d:%s' % (now.year, now.month,
-            #        now.day,
-            #         now.hour, now.minute,
-            #         now.second+now.microsecond/1000000.0)}
-            #print(report)
-            #transformed_position = {'x':self.device.position[0] + distance * sin(angle*0.0174533),
-            #                      'y':self.device.position[1] + distance * cos(angle*0.0174533)}
+                      
             world_angle=(-angle+self.device.rotation+self.device.antana_angle_correction+30)*0.0174533                      
             
             transformed_position = {'x':self.device.position[0] + distance * sin(world_angle),
                                    'y':self.device.position[1] + distance * cos(world_angle)}
-            if distance < 16:
-                self.device.status['Last target'] = (distance, angle, velocity)
+            #statics[int(angle)]+=1
+            #print(statics)
+            near=2
+            far=20
+            if distance < far and distance >near:
+                self.device.status['Last target'] = (distance, angle)
                 self.device.status['Detection']+=1
                 #print({distance,angle},self.device.rotation, ' -> ', transformed_position)
-                DeviceServer.log('%04d-%02d-%02d_%02d:%02d:%02d:%03d  "%s"  %12f  %12f  %12f  %12f  %12f  %12f' % (now.year, now.month, now.day, now.hour, now.minute, 
+                DeviceServer.log('%04d-%02d-%02d_%02d:%02d:%02d:%03d  "%s"  %12f  %12f ' % (now.year, now.month, now.day, now.hour, now.minute, 
                     now.second,now.microsecond / 1000.0,self.device.name,
-                    distance, angle, x, y, velocity, power))
-                filter.tracetarget(Target(position={'x':x, 'y':y},
-                                          velocity={'vx':None, 'vy':velocity},
-                                          device=self.device, transformed_pos=transformed_position, time=now))
+                    distance, angle))
+                t=Target(device=self.device, transformed_pos=transformed_position, time=now)
+                filter.tracetarget(t)
+                DeviceServer.log('=> '+ str(t.filtered_pos))
+            else:
+                print('target out of range limit %s, distance='%(str((near,far)))+str(distance))
 
 class DeviceServer:
     logfunc = None

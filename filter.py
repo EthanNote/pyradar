@@ -16,7 +16,8 @@ class Filter:
                                    [0, 1, 0, 1],
                                    [0, 0, 1, 0],
                                    [0, 0, 0, 1]])
-
+        self.kfilter.R = np.array([[16, 0],
+                                   [0, 16]])
         #Observation matrix
         #for state vector [x, y, vx, vy] mesure [x, y]
         self.kfilter.H = np.array([[1, 0, 0, 0],
@@ -58,7 +59,7 @@ class Tracer:
         target.filtered_pos = {'x':state[0][0], 'y':state[1][0]}      
         self.targetlist.append(target)
         #print('path(%i,%f,%f)'%(self.id, state[0][0],state[1][0]))
-        print(target.transformed_pos, target.filtered_pos)
+        #print(target.transformed_pos, target.filtered_pos)
                      
 def tracetarget(target, maxdistance=2.):
     Tracer.history.append(target)

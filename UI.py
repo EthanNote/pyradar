@@ -14,7 +14,7 @@ matplotlib.use('TkAgg')
 class UI:
     def __init__(self, **kwargs):        
         self.top = tk.Tk()
-        self.top.geometry('1350x700')
+        self.top.geometry('1350x1000')
         self.top.title('Radar')
         self.menu=tk.Menu(self.top)
         
@@ -24,7 +24,7 @@ class UI:
         self.logtext = tk.Text(self.top, height=2, state='disable', bg='Ivory')
         self.fig = Figure(figsize=(5,5), dpi=100) 
         self.mcanvas = FigureCanvasTkAgg(self.fig, master=self.top)
-        self.mcanvas.get_tk_widget().configure({'width':700,'height':700})
+        self.mcanvas.get_tk_widget().configure({'width':1000,'height':1000})
         self.subplot=self.fig.add_subplot(111, xlim=(-6,6), ylim=(-6,6))
         #self.subplot.xlim((-6,6))
         #self.subplot.ylim((0,12))
@@ -70,7 +70,7 @@ class UI:
         filter.clearhistory()
 
     def loadhistory(self):
-        print('loadhistory')
+        #print('loadhistory')
         filter.loadhistory()
         self.scatter_all()
 
@@ -101,7 +101,7 @@ class UI:
         self.mcanvas.show()
     
     def scatter_all(self):
-        print('plot all')
+        #print('plot all')
         self.subplot.scatter([t.filtered_pos['x'] for t in filter.Tracer.history],
                         [t.filtered_pos['y'] for t in filter.Tracer.history],color='black')
         for t in filter.Tracer.history:
@@ -111,9 +111,9 @@ class UI:
         
 
     def plot_all_path(self):
-        print('lists=%d'%(len(filter.Tracer.tracerlist)))
+        #print('lists=%d'%(len(filter.Tracer.tracerlist)))
         for l in filter.Tracer.tracerlist:
-            print('  len=%d'%(len(l.targetlist)))
+            #print('  len=%d'%(len(l.targetlist)))
             xs=[t.filtered_pos['x'] for t in l.targetlist]
             ys=[t.filtered_pos['y'] for t in l.targetlist]
             self.subplot.scatter(xs, ys)
@@ -121,7 +121,7 @@ class UI:
             for t in l.targetlist:
                 self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
                                   [t.transformed_pos['y'], t.filtered_pos['y']], color='gray')    
-                print(t.transformed_pos, t.filtered_pos)
+                #print(t.transformed_pos, t.filtered_pos)
         self.mcanvas.show()
 
     def plot_radarcover(self):
@@ -133,7 +133,10 @@ class UI:
                 ly=np.cos((d.rotation-15)*0.0174533)*1000+cy
                 rx=np.sin((d.rotation+15)*0.0174533)*1000+cx
                 ry=np.cos((d.rotation+15)*0.0174533)*1000+cy
+                mx=np.sin(d.rotation*0.0174533)*1000+cx
+                my=np.cos(d.rotation*0.0174533)*1000+cy
                 self.subplot.plot([lx, cx, rx],[ly, cy, ry], color='gray')
+                self.subplot.plot([mx, cx],[my, cy],color='gray')
 
 
 ui=UI()
