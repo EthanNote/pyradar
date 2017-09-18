@@ -27,5 +27,5 @@ class Device:
     #    target.device=self
     #    return target
 
-Device.known_device = [Device(address=('192.168.1.7',6000),name='Radar_A', position=(-4.75, 0.73), rotation=68.75),
-                       Device(address=('192.168.1.8',6000),name='Radar_B', position=(-6, 0), rotation=90)]
+Device.known_device = [Device(address=('192.168.1.7',6000),name='Radar_A', position=(6, 0), rotation=0),
+                       Device(address=('192.168.1.8',6000),name='Radar_B', position=(7, 0), rotation=0)]

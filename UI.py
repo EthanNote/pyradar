@@ -25,7 +25,7 @@ class UI:
         self.fig = Figure(figsize=(5,5), dpi=100) 
         self.mcanvas = FigureCanvasTkAgg(self.fig, master=self.top)
         self.mcanvas.get_tk_widget().configure({'width':1000,'height':1000})
-        self.subplot=self.fig.add_subplot(111, xlim=(-6,6), ylim=(-6,6))
+        self.subplot=self.fig.add_subplot(111)
         #self.subplot.xlim((-6,6))
         #self.subplot.ylim((0,12))
 
@@ -35,7 +35,7 @@ class UI:
         self.testbutton.pack(anchor=tk.W, fill=tk.Y, side=tk.LEFT)
         self.scatterbutton = tk.Button(self.command,text='History', padx=10, command=self.scatter_all)
         self.plotbutton=tk.Button(self.command,text='Path', padx=10, command=self.plot_all_path)
-        self.clearbutton = tk.Button(self.command,text='Clear Plot',padx=10, command=self.clearplot)
+        self.clearbutton = tk.Button(self.command,text='Clear',padx=10, command=self.clearplot)
         self.clearhistorybutton = tk.Button(self.command,text='Clear History',padx=30, command=self.clearhistory)
         self.savebutton = tk.Button(self.command,text='Save',padx=10, command=filter.savehistory)
         self.loadbutton = tk.Button(self.command,text='Load',padx=10, command=self.loadhistory)
@@ -51,6 +51,7 @@ class UI:
         self.logtext.pack(expand=True, fill=tk.BOTH)
 
         self.mcanvas.show()
+        self.clearplot()
         
     def clear(self):
         self.logtext.config({'state':'normal'})
@@ -63,6 +64,9 @@ class UI:
     
     def clearplot(self):
         self.subplot.clear()
+        self.subplot.set_xlim(0,15)
+        self.subplot.set_ylim(0,15)
+        filter.Tracer.history.clear()
         self.mcanvas.show()            
 
     def clearhistory(self):
@@ -98,6 +102,7 @@ class UI:
             self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
                               [t.transformed_pos['y'], t.filtered_pos['y']], color='gray') 
         self.plot_radarcover()
+
         self.mcanvas.show()
     
     def scatter_all(self):
