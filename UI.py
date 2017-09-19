@@ -4,7 +4,7 @@ import plot
 import device_profile
 import device_server
 import filter
-
+import ground
 import matplotlib
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -64,9 +64,11 @@ class UI:
     
     def clearplot(self):
         self.subplot.clear()
-        self.subplot.set_xlim(0,15)
-        self.subplot.set_ylim(0,15)
+        self.subplot.set_xlim(-1,12)
+        self.subplot.set_ylim(-12,1)
         filter.Tracer.history.clear()
+        ground.plot_ground(self.subplot)
+        self.plot_radarcover()
         self.mcanvas.show()            
 
     def clearhistory(self):
@@ -131,7 +133,7 @@ class UI:
 
     def plot_radarcover(self):
         for d in device_profile.Device.known_device:
-            if d.status['Detection']>0 :
+            if True: #d.status['Detection']>0 :
                 cx=d.position[0]
                 cy=d.position[1]
                 lx=np.sin((d.rotation-15)*0.0174533)*1000+cx
@@ -140,8 +142,8 @@ class UI:
                 ry=np.cos((d.rotation+15)*0.0174533)*1000+cy
                 mx=np.sin(d.rotation*0.0174533)*1000+cx
                 my=np.cos(d.rotation*0.0174533)*1000+cy
-                self.subplot.plot([lx, cx, rx],[ly, cy, ry], color='gray')
-                self.subplot.plot([mx, cx],[my, cy],color='gray')
+                self.subplot.plot([lx, cx, rx],[ly, cy, ry], color='gray', linestyle='--',linewidth=0.5)
+                self.subplot.plot([mx, cx],[my, cy],color='gray', linestyle=':',linewidth=0.5)
 
 
 ui=UI()
