@@ -14,7 +14,7 @@ matplotlib.use('TkAgg')
 class UI:
     def __init__(self, **kwargs):        
         self.top = tk.Tk()
-        self.top.geometry('1350x1000')
+        self.top.geometry('1350x750')
         self.top.title('Radar')
         self.menu=tk.Menu(self.top)
         
@@ -24,7 +24,7 @@ class UI:
         self.logtext = tk.Text(self.top, height=2, state='disable', bg='Ivory')
         self.fig = Figure(figsize=(5,5), dpi=100) 
         self.mcanvas = FigureCanvasTkAgg(self.fig, master=self.top)
-        self.mcanvas.get_tk_widget().configure({'width':1000,'height':1000})
+        self.mcanvas.get_tk_widget().configure({'width':700,'height':700})
         self.subplot=self.fig.add_subplot(111)
         #self.subplot.xlim((-6,6))
         #self.subplot.ylim((0,12))
@@ -67,6 +67,7 @@ class UI:
         self.subplot.set_xlim(-1,12)
         self.subplot.set_ylim(-12,1)
         filter.Tracer.history.clear()
+        filter.Tracer.tracerlist.clear()
         ground.plot_ground(self.subplot)
         self.plot_radarcover()
         self.mcanvas.show()            
