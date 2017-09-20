@@ -84,13 +84,10 @@ class DataHandler(BaseRequestHandler):
             else:
                 print('target out of range limit %s, distance='%(str((near,far)))+str(distance))
 
-class DeviceServer:
-    logfunc = None
+class DeviceServer:   
+    UI=None
     @classmethod
-    def log(self,text):
-        if DeviceServer.logfunc:
-            DeviceServer.logfunc(text)
-
+    
     def __init__(self):
         self.server = ThreadingTCPServer(('', 5100),DataHandler)
         self.thread = Thread(target=DeviceServer.start,args=(self,))

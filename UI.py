@@ -87,7 +87,7 @@ class UI:
         self.logtext.insert(tk.END,'\n')
         self.logtext.config({'state':'disable'})    
         self.logtext.yview(1e6)
-        self.update_device()
+        #self.update_device()
 
     def update_device(self):
         #update device information
@@ -99,24 +99,32 @@ class UI:
             self.statustext.insert(tk.END,'\n\n')
         self.statustext.config({'state':'disable'})
 
-        self.subplot.scatter([t.filtered_pos['x'] for t in filter.Tracer.history],
-                        [t.filtered_pos['y'] for t in filter.Tracer.history],color='black')
-        for t in filter.Tracer.history:
-            self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
-                              [t.transformed_pos['y'], t.filtered_pos['y']], color='gray') 
-        self.plot_radarcover()
+        # self.subplot.scatter([t.filtered_pos['x'] for t in filter.Tracer.history],
+        #                 [t.filtered_pos['y'] for t in filter.Tracer.history],color='black')
+        # for t in filter.Tracer.history:
+        #     self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
+        #                       [t.transformed_pos['y'], t.filtered_pos['y']], color='gray') 
+        # self.plot_radarcover()
 
-        self.mcanvas.show()
+        # self.mcanvas.show()
     
-    def scatter_all(self):
-        #print('plot all')
-        self.subplot.scatter([t.filtered_pos['x'] for t in filter.Tracer.history],
-                        [t.filtered_pos['y'] for t in filter.Tracer.history],color='black')
-        for t in filter.Tracer.history:
+    # def scatter_all(self):
+    #     #print('plot all')
+    #     self.subplot.scatter([t.filtered_pos['x'] for t in filter.Tracer.history],
+    #                     [t.filtered_pos['y'] for t in filter.Tracer.history],color='black')
+    #     for t in filter.Tracer.history:
+    #         self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
+    #                           [t.transformed_pos['y'], t.filtered_pos['y']], color='gray') 
+    #     self.mcanvas.show()
+        
+    def scatter_targets(self, targetlist):
+        self.subplot.scatter([t.filtered_pos['x'] for t in targetlist],
+                        [t.filtered_pos['y'] for t in targetlist],color='black')
+        for t in targetlist:
             self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
                               [t.transformed_pos['y'], t.filtered_pos['y']], color='gray') 
         self.mcanvas.show()
-        
+
 
     def plot_all_path(self):
         #print('lists=%d'%(len(filter.Tracer.tracerlist)))
@@ -150,7 +158,7 @@ class UI:
 ui=UI()
 #filter.test_filter()
 ui.update_device()
-device_server.DeviceServer.logfunc = ui.log
+device_server.DeviceServer.UI=ui
 server = device_server.DeviceServer()
 server.startthread()
 tk.mainloop()
