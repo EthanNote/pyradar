@@ -80,13 +80,14 @@ class DataHandler(BaseRequestHandler):
                     distance, angle))
                 t=Target(device=self.device, transformed_pos=transformed_position, time=now)
                 filter.tracetarget(t)
+                DeviceServer.scatter_targets([t])
+                DeviceServer.lasttarget=t
                 DeviceServer.log('=> '+ str(t.filtered_pos))
+                DeviceServer.lasttarget=None
             else:
                 print('target out of range limit %s, distance='%(str((near,far)))+str(distance))
 
 class DeviceServer:   
-    UI=None
-    @classmethod
     
     def __init__(self):
         self.server = ThreadingTCPServer(('', 5100),DataHandler)

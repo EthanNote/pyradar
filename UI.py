@@ -87,7 +87,7 @@ class UI:
         self.logtext.insert(tk.END,'\n')
         self.logtext.config({'state':'disable'})    
         self.logtext.yview(1e6)
-        #self.update_device()
+        self.update_device()
 
     def update_device(self):
         #update device information
@@ -108,14 +108,14 @@ class UI:
 
         # self.mcanvas.show()
     
-    # def scatter_all(self):
-    #     #print('plot all')
-    #     self.subplot.scatter([t.filtered_pos['x'] for t in filter.Tracer.history],
-    #                     [t.filtered_pos['y'] for t in filter.Tracer.history],color='black')
-    #     for t in filter.Tracer.history:
-    #         self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
-    #                           [t.transformed_pos['y'], t.filtered_pos['y']], color='gray') 
-    #     self.mcanvas.show()
+    def scatter_all(self):
+         #print('plot all')
+        self.subplot.scatter([t.filtered_pos['x'] for t in filter.Tracer.history],
+                         [t.filtered_pos['y'] for t in filter.Tracer.history],color='black')
+        for t in filter.Tracer.history:
+            self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
+                               [t.transformed_pos['y'], t.filtered_pos['y']], color='gray') 
+        self.mcanvas.show()
         
     def scatter_targets(self, targetlist):
         self.subplot.scatter([t.filtered_pos['x'] for t in targetlist],
@@ -158,7 +158,9 @@ class UI:
 ui=UI()
 #filter.test_filter()
 ui.update_device()
-device_server.DeviceServer.UI=ui
+device_server.DeviceServer.log=ui.log
+#device_server.DeviceServer.update_device=ui.update_device
+device_server.DeviceServer.scatter_targets=ui.scatter_targets
 server = device_server.DeviceServer()
 server.startthread()
 tk.mainloop()
