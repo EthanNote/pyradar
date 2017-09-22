@@ -119,10 +119,10 @@ class UI:
         
     def scatter_targets(self, targetlist):
         self.subplot.scatter([t.filtered_pos['x'] for t in targetlist],
-                        [t.filtered_pos['y'] for t in targetlist],color='black')
+                        [t.filtered_pos['y'] for t in targetlist],color='black',s=3)
         for t in targetlist:
             self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
-                              [t.transformed_pos['y'], t.filtered_pos['y']], color='gray') 
+                              [t.transformed_pos['y'], t.filtered_pos['y']], color='gray',linewidth=0.5) 
         self.mcanvas.show()
 
 

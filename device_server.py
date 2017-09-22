@@ -62,11 +62,14 @@ class DataHandler(BaseRequestHandler):
             #power = msg[end]
 
             now = datetime.now()
-                      
-            world_angle=(-angle+self.device.rotation+self.device.antana_angle_correction+30)*0.0174533                      
             
-            transformed_position = {'x':self.device.position[0] + distance * sin(world_angle),
-                                   'y':self.device.position[1] + distance * cos(world_angle)}
+            corrected_angle=angle*self.device.angle_correction[0]+self.device.angle_correction[1]
+            corrected_distance=distance*self.device.distance_correction[0]+self.device.distance_correction[1]          
+            
+            world_rad=(-angle+self.device.rotation+self.device.antana_angle_correction+30)*0.0174533                      
+                        
+            transformed_position = {'x':self.device.position[0] + corrected_distance * sin(world_rad),
+                                   'y':self.device.position[1] + corrected_distance * cos(world_rad)}
             #statics[int(angle)]+=1
             #print(statics)
             near=2
