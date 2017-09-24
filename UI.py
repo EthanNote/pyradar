@@ -10,7 +10,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
 matplotlib.use('TkAgg')
-
+#logfile=open('logfile.txt','w')
 class UI:
     def __init__(self, **kwargs):        
         self.top = tk.Tk()
@@ -88,6 +88,9 @@ class UI:
         self.logtext.config({'state':'disable'})    
         self.logtext.yview(1e6)
         self.update_device()
+        logfile=open('log.txt','a')
+        logfile.write(text+'\n')
+        logfile.close()
 
     def update_device(self):
         #update device information

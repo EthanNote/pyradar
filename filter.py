@@ -50,7 +50,18 @@ class Tracer:
         #self.add(self.filter.getstate(), firsttarget.device)
         self.targetlist.append(firsttarget)
         self.id=len(Tracer.tracerlist)
-        
+
+    def trianglefix(self):
+        if len(self.targetlist)>3:
+            t=self.targetlist[-3:]
+            x=[ts.transformed_pos['x'] for ts in t]            
+            y=[ts.transformed_pos['y'] for ts in t]
+            d1=(y[2]-y[0])**2+(x[2]-x[0])**2
+            d2=(y[1]-y[0])**2+(x[1]-x[0])**2
+            d3=(y[2]-y[1])**2+(x[2]-x[1])**2
+            if d1<0.5 and d1<d2+d3+(d2*d3)**0.5 or d1 < 0.2:
+                self.targetlist.remove(self.targetlist[-2])
+
     def filt(self, target):
         x = target.transformed_pos['x']
         y = target.transformed_pos['y']
@@ -58,6 +69,7 @@ class Tracer:
         state = self.filter.getstate()
         target.filtered_pos = {'x':state[0][0], 'y':state[1][0]}      
         self.targetlist.append(target)
+        self.trianglefix()
         #print('path(%i,%f,%f)'%(self.id, state[0][0],state[1][0]))
         #print(target.transformed_pos, target.filtered_pos)
                      
