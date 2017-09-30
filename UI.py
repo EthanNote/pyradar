@@ -69,7 +69,7 @@ class UI:
         filter.Tracer.history.clear()
         filter.Tracer.tracerlist.clear()
         ground.plot_ground(self.subplot)
-        self.plot_radarcover()
+        #self.plot_radarcover()
         self.mcanvas.show()            
 
     def clearhistory(self):
@@ -137,9 +137,9 @@ class UI:
             ys=[t.filtered_pos['y'] for t in l.targetlist]
             self.subplot.scatter(xs, ys)
             self.subplot.plot(xs, ys)
-            for t in l.targetlist:
-                self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
-                                  [t.transformed_pos['y'], t.filtered_pos['y']], color='gray')    
+            #for t in l.targetlist:
+            #    self.subplot.plot([t.transformed_pos['x'], t.filtered_pos['x']], 
+            #                      [t.transformed_pos['y'], t.filtered_pos['y']], color='gray')    
                 #print(t.transformed_pos, t.filtered_pos)
         self.mcanvas.show()
 
