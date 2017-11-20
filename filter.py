@@ -5,6 +5,12 @@ from target import Target
 from device_profile import Device
 import pickle
 import datetime
+
+#3D output through UDP
+import socket
+addr=('localhost', 5110)
+s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
 #The Kalman-Filter
 class Filter:
     def __init__(self):
@@ -95,6 +101,9 @@ def tracetarget(target, maxdistance=2.):
         print('New Tracer')
         nearestTracer = Tracer(target)
         Tracer.tracerlist.append(nearestTracer)
+
+    s.sendto(('path(%d,%f,%f)'%(Tracer.tracerlist.index(nearestTracer),target.filtered_pos['x'], target.filtered_pos['y'])).encode('utf-8'),addr)
+
 
 def savehistory():
     f=open('history.dat', 'wb')
