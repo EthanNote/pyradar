@@ -72,8 +72,8 @@ class DataHandler(BaseRequestHandler):
                                    'y':self.device.position[1] + corrected_distance * cos(world_rad)}
             #statics[int(angle)]+=1
             #print(statics)
-            near=2
-            far=20
+            near=1
+            far=15
             if distance < far and distance >near:
                 self.device.status['Last target'] = (distance, angle)
                 self.device.status['Detection']+=1
