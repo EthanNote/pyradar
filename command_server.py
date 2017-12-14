@@ -1,13 +1,9 @@
 from socketserver import BaseRequestHandler, ThreadingTCPServer
 import traceback
-
 import filter
 import plot
-
 def rnt(string):
     return str(string).replace('\b','').replace('\r','').replace('\t','    ').replace('\n', '\r\n')
-
-
 class CommandHandler(BaseRequestHandler):
 
     def print(self, obj):
@@ -21,23 +17,17 @@ class CommandHandler(BaseRequestHandler):
             input = self.request.recv(256)
             if not input:
                 break
-
             for ch in input.decode():
                 if ch == '\n':
                     try:
                         r = exec(buffer)                
                         if r != None:
-                            self.request.send(rnt(r).encode())                           
-
+                            self.request.send(rnt(r).encode())
                     except Exception as e:
                         self.request.send(rnt(traceback.format_exc()).encode())                        
                     buffer = ''
-
                 else:
                     buffer+=ch       
-
-    
-
 def run_command_server():
     serv = ThreadingTCPServer(('',9000),CommandHandler)
     serv.serve_forever()

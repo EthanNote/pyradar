@@ -18,7 +18,6 @@ class UI:
         self.top.title('Radar')
         self.menu=tk.Menu(self.top)
         
-
         self.command = tk.Frame(self.top)
 
         self.logtext = tk.Text(self.top, height=2, state='disable', bg='Ivory')
@@ -31,11 +30,15 @@ class UI:
 
         self.mcanvas.get_tk_widget().pack(side=tk.RIGHT)
         
-        self.testbutton=tk.Button(self.command, text='Test', padx=10, command=filter.test_filter)
+        self.testbutton=tk.Button(self.command, text='Test', padx=10)
+        self.testbutton.bind_all('<F1>', filter.test_filter)
         self.testbutton.pack(anchor=tk.W, fill=tk.Y, side=tk.LEFT)
-        self.scatterbutton = tk.Button(self.command,text='History', padx=10, command=self.scatter_all)
-        self.plotbutton=tk.Button(self.command,text='Path', padx=10, command=self.plot_all_path)
-        self.clearbutton = tk.Button(self.command,text='Clear',padx=10, command=self.clearplot)
+        self.scatterbutton = tk.Button(self.command,text='History', padx=10)
+        self.scatterbutton.bind_all('<F2>', self.scatter_all)
+        self.plotbutton=tk.Button(self.command,text='Path', padx=10)
+        self.scatterbutton.bind_all('<F3>',self.plot_all_path)
+        self.clearbutton = tk.Button(self.command,text='Clear',padx=10)
+        self.scatterbutton.bind_all('<F4>',self.clearplot)
         self.clearhistorybutton = tk.Button(self.command,text='Clear History',padx=30, command=self.clearhistory)
         self.savebutton = tk.Button(self.command,text='Save',padx=10, command=filter.savehistory)
         self.loadbutton = tk.Button(self.command,text='Load',padx=10, command=self.loadhistory)
@@ -58,11 +61,8 @@ class UI:
         self.logtext.delete(1.0, tk.END)
         self.logtext.config({'state':'disable'})
         filter.Tracer.history.clear()
-
-        self.clearplot()
-           
-    
-    def clearplot(self):
+        self.clearplot()               
+    def clearplot(self,event):
         self.subplot.clear()
         self.subplot.set_xlim(-1,12)
         self.subplot.set_ylim(-12,1)
@@ -79,7 +79,7 @@ class UI:
     def loadhistory(self):
         #print('loadhistory')
         filter.loadhistory()
-        self.scatter_all()
+        self.scatter_all(event)
 
     def log(self,text):
         self.logtext.config({'state':'normal'})
@@ -129,7 +129,7 @@ class UI:
         self.mcanvas.show()
 
 
-    def plot_all_path(self):
+    def plot_all_path(self,event):
         #print('lists=%d'%(len(filter.Tracer.tracerlist)))
         for l in filter.Tracer.tracerlist:
             #print('  len=%d'%(len(l.targetlist)))
@@ -156,9 +156,6 @@ class UI:
                 my=np.cos(d.rotation*0.0174533)*1000+cy
                 self.subplot.plot([lx, cx, rx],[ly, cy, ry], color='gray', linestyle='--',linewidth=0.5)
                 self.subplot.plot([mx, cx],[my, cy],color='gray', linestyle=':',linewidth=0.5)
-
-
-
 ui=UI()
 #filter.test_filter()
 ui.update_device()
