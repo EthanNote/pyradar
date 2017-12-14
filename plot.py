@@ -15,9 +15,7 @@ def plot_tracers(split=False, show=True):
     plt.figure()
     if not split:        
         for t in Tracer.tracerlist:
-            plot_tracer(t,False)
-            
-        
+            plot_tracer(t,False)        
     else:
         l = len(Tracer.tracerlist)
         if(l<1):

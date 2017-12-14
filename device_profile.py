@@ -18,7 +18,6 @@ class Device:
         #self.antana_angle_correction=0 
         self.angle_correction=[1,0]
         self.distance_correction=[1,-1]
-
 Device.known_device = [Device(address=('192.168.1.7',6000),name='Radar_B', position=(1.92, -10.4), rotation=15),
                        Device(address=('192.168.1.8',6000),name='Radar_A', position=(6.5, -1.0), rotation=195)]
 
